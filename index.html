@@ -9,33 +9,94 @@
 <body>
     <div class="app">
         <header>
-            <h1>DumbKan</h1>
+            <div class="header-left">
+                <h1>DumbKan</h1>
+                <div class="board-selector">
+                    <button id="current-board" class="board-button">Work</button>
+                    <div id="board-menu" class="board-menu" hidden>
+                        <div id="boards-list-menu"></div>
+                        <button class="manage-boards-btn" onclick="openManageBoardsModal()">
+                            <span class="icon">⚙️</span> Manage Boards
+                        </button>
+                    </div>
+                </div>
+            </div>
             <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
         </header>
 
         <main>
             <div class="board">
                 <div class="column" data-column="todo">
-                    <h2>To Do</h2>
+                    <div class="column-header">
+                        <h2 contenteditable="true" class="column-name">To Do</h2>
+                        <button class="remove-column" onclick="openDeleteColumnModal('todo')" title="Remove column">×</button>
+                    </div>
                     <div class="tasks" id="todo"></div>
                     <button class="add-task" data-column="todo">+ Add Task</button>
                 </div>
 
                 <div class="column" data-column="doing">
-                    <h2>Doing</h2>
+                    <div class="column-header">
+                        <h2 contenteditable="true" class="column-name">Doing</h2>
+                        <button class="remove-column" onclick="openDeleteColumnModal('doing')" title="Remove column">×</button>
+                    </div>
                     <div class="tasks" id="doing"></div>
                     <button class="add-task" data-column="doing">+ Add Task</button>
                 </div>
 
                 <div class="column" data-column="done">
-                    <h2>Done</h2>
+                    <div class="column-header">
+                        <h2 contenteditable="true" class="column-name">Done</h2>
+                        <button class="remove-column" onclick="openDeleteColumnModal('done')" title="Remove column">×</button>
+                    </div>
                     <div class="tasks" id="done"></div>
                     <button class="add-task" data-column="done">+ Add Task</button>
                 </div>
+                
+                <button id="add-column" class="add-column">+ Add Column</button>
             </div>
         </main>
 
         <div id="toast" class="toast" hidden></div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal" style="display: none">
+        <div class="modal-content">
+            <h2 id="task-modal-title">Add Task</h2>
+            <form id="task-form" class="task-form">
+                <textarea 
+                    id="task-input" 
+                    placeholder="What needs to be done?" 
+                    rows="3" 
+                    maxlength="500"
+                    required
+                ></textarea>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-button" onclick="closeTaskModal()">Cancel</button>
+                    <button type="button" id="delete-task-btn" class="delete-button" style="display: none;">Delete Task</button>
+                    <button type="submit" class="submit-button">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Column Modal -->
+    <div id="delete-column-modal" class="modal" style="display: none">
+        <div class="modal-content delete-confirmation">
+            <div class="modal-header">
+                <h2>Delete Column</h2>
+                <button class="close-button" onclick="closeDeleteColumnModal()">×</button>
+            </div>
+            <div class="delete-warning">
+                <p>Are you sure you want to remove this column and all its tasks?</p>
+                <p>This action cannot be undone.</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-button" onclick="closeDeleteColumnModal()">Cancel</button>
+                <button class="delete-button" onclick="confirmDeleteColumn()">Delete Column</button>
+            </div>
+        </div>
     </div>
 
     <!-- PIN Modal -->
